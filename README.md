@@ -7,6 +7,31 @@ Una aplicación Angular moderna de autenticación con JWT, Spring Security y aut
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06B6D4?style=for-the-badge&logo=tailwindcss)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge&logo=jsonwebtokens)
 
+<div align="center">
+  <a href="./registro.png" target="_blank">
+    <img src="./registro.png" alt="Página de Registro" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+  <a href="./imagen_2025-07-21_011417843.png" target="_blank">
+    <img src="./imagen_2025-07-21_011417843.png" alt="Interface Principal" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+  <a href="./imagen_2025-07-21_011447668.png" target="_blank">
+    <img src="./imagen_2025-07-21_011447668.png" alt="Dashboard" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+  <a href="./imagen_2025-07-21_011506697.png" target="_blank">
+    <img src="./imagen_2025-07-21_011506697.png" alt="Panel de Control" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+  <a href="./imagen_2025-07-21_011523150.png" target="_blank">
+    <img src="./imagen_2025-07-21_011523150.png" alt="Configuración 2FA" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+  <a href="./imagen_2025-07-21_011603189.png" target="_blank">
+    <img src="./imagen_2025-07-21_011603189.png" alt="Setup Seguridad" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+  <a href="./imagen_2025-07-21_011627379.png" target="_blank">
+    <img src="./imagen_2025-07-21_011627379.png" alt="Arquitectura" width="300" style="border-radius: 8px; margin: 10px;">
+  </a>
+</div>
+
+
 ## 📋 Tabla de Contenidos
 
 - [Características](#-características)
