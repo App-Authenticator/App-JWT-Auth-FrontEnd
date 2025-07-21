@@ -1,0 +1,128 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900 flex items-center justify-center px-4">
+  <div class="max-w-md w-full bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/10">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-shield-alt text-emerald-400 text-3xl"></i>
+      </div>
+      <h1 class="text-2xl font-bold text-white mb-2">
+        Configurar Autenticación 2FA
+      </h1>
+      <p class="text-slate-300 text-sm">
+        Protege tu cuenta con un código adicional
+      </p>
+    </div>
+
+    <div class="flex justify-center mb-8">
+      <div class="flex items-center space-x-4">
+        <div [class]="step === 'email' ? 'bg-emerald-500' : 'bg-slate-600'"
+             class="w-3 h-3 rounded-full transition-all"></div>
+        <div [class]="step === 'qr' ? 'bg-emerald-500' : 'bg-slate-600'"
+             class="w-3 h-3 rounded-full transition-all"></div>
+        <div [class]="step === 'verify' ? 'bg-emerald-500' : 'bg-slate-600'"
+             class="w-3 h-3 rounded-full transition-all"></div>
+      </div>
+    </div>
+
+    <!-- Paso 1: Email -->
+    <div *ngIf="step === 'email'">
+      <h2 class="text-xl font-bold text-white mb-6 text-center">Confirma tu email</h2>
+
+      <form [formGroup]="setupForm" (ngSubmit)="setupMfa()">
+        <div class="mb-6">
+          <label for="email" class="block text-sm font-medium text-slate-200 mb-2">
+            Correo electrónico
+          </label>
+          <input type="email" id="email" formControlName="email"
+            class="w-full px-4 py-3 bg-white/5 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            placeholder="tu@email.com">
+        </div>
+
+        <button type="submit" [disabled]="setupForm.get('email')?.invalid || isLoading"
+          class="w-full bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+          <i [class]="isLoading ? 'fas fa-spinner fa-spin' : 'fas fa-arrow-right'" class="mr-2"></i>
+          {{ isLoading ? 'Configurando...' : 'Continuar' }}
+        </button>
+      </form>
+    </div>
+
+    <div *ngIf="step === 'qr' && qrCodeData">
+      <h2 class="text-xl font-bold text-white mb-6 text-center">Escanea el código QR</h2>
+
+      <div class="text-center mb-6">
+        <div class="bg-white p-4 rounded-2xl inline-block mb-4">
+          <img [src]="qrCodeData.qr_code_image" alt="QR Code" class="w-48 h-48 mx-auto">
+        </div>
+
+        <div class="bg-slate-800/50 rounded-xl p-4 mb-4">
+          <p class="text-slate-300 text-sm mb-2">O ingresa este código manualmente:</p>
+          <code class="text-emerald-400 text-xs font-mono break-all">{{ qrCodeData.secret }}</code>
+        </div>
+
+        <p class="text-slate-300 text-sm">
+          {{ qrCodeData.message }}
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+          <h4 class="text-white font-medium mb-2">📱 Instrucciones:</h4>
+          <ol class="text-slate-300 text-sm space-y-1">
+            <li>1. Abre Google Authenticator</li>
+            <li>2. Toca el botón "+"</li>
+            <li>3. Selecciona "Escanear código QR"</li>
+            <li>4. Escanea el código de arriba</li>
+          </ol>
+        </div>
+
+        <button (click)="proceedToVerification()"
+          class="w-full bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 hover:scale-105">
+          <i class="fas fa-check mr-2"></i>
+          Ya escaneé el código
+        </button>
+
+        <button (click)="goBack()" type="button"
+          class="w-full bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300">
+          <i class="fas fa-arrow-left mr-2"></i>
+          Volver
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="step === 'verify'">
+      <h2 class="text-xl font-bold text-white mb-6 text-center">Verifica el código</h2>
+
+      <form [formGroup]="setupForm" (ngSubmit)="verifyMfa()">
+        <div class="mb-6">
+          <label for="verificationCode" class="block text-sm font-medium text-slate-200 mb-2">
+            Código de Google Authenticator
+          </label>
+          <input type="text" id="verificationCode" formControlName="verificationCode"
+            maxlength="6" (input)="onCodeInput($event)"
+            class="w-full px-4 py-3 bg-white/5 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center text-2xl font-mono tracking-widest transition-all"
+            placeholder="123456">
+        </div>
+
+        <div class="space-y-3">
+          <button type="submit" [disabled]="setupForm.get('verificationCode')?.invalid || isLoading"
+            class="w-full bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+            <i [class]="isLoading ? 'fas fa-spinner fa-spin' : 'fas fa-shield-check'" class="mr-2"></i>
+            {{ isLoading ? 'Verificando...' : 'Verificar y Habilitar 2FA' }}
+          </button>
+
+          <button (click)="goBack()" type="button"
+            class="w-full bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Volver
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center text-sm text-slate-400 mt-4">
+        <p>El código cambia cada 30 segundos</p>
+      </div>
+    </div>
+
+  </div>
+</div>

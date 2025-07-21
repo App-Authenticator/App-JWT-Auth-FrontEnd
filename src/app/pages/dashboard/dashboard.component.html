@@ -1,0 +1,120 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900">
+  <div class="container mx-auto px-4 py-8">
+
+    <div class="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/10 mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-white mb-2">
+            ¡Bienvenido, {{ currentUser?.nombre }}!
+          </h1>
+          <p class="text-slate-300">
+            Dashboard de SecureAuth
+          </p>
+        </div>
+        <button (click)="logout()"
+          class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300">
+          <i class="fas fa-sign-out-alt mr-2"></i>
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+
+      <div class="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/10">
+        <h2 class="text-2xl font-bold text-white mb-6">Información Personal</h2>
+
+        <div class="space-y-4" *ngIf="currentUser">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Email:</span>
+            <span class="text-white">{{ currentUser.email }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Nombre:</span>
+            <span class="text-white">{{ currentUser.nombre }} {{ currentUser.apellido }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Teléfono:</span>
+            <span class="text-white">{{ currentUser.telefono }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Rol:</span>
+            <span class="text-white">{{ currentUser.role }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/10">
+        <h2 class="text-2xl font-bold text-white mb-6">Estado de Seguridad</h2>
+
+        <div class="space-y-6">
+          <!-- MFA Status -->
+          <div class="flex items-center justify-between p-4 rounded-2xl"
+               [ngClass]="currentUser?.mfaEnabled ? 'bg-green-500/10 border border-green-500/30' : 'bg-yellow-500/10 border border-yellow-500/30'">
+            <div class="flex items-center">
+              <i [class]="currentUser?.mfaEnabled ? 'fas fa-shield-check text-green-400' : 'fas fa-shield-exclamation text-yellow-400'"
+                 class="text-2xl mr-4"></i>
+              <div>
+                <h3 class="text-white font-semibold">Autenticación 2FA</h3>
+                <p class="text-slate-300 text-sm">
+                  {{ currentUser?.mfaEnabled ? 'Activada y protegida' : 'No configurada' }}
+                </p>
+              </div>
+            </div>
+
+            <button *ngIf="!currentUser?.mfaEnabled" (click)="goToMfaSetup()"
+              class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl transition-all duration-300">
+              Configurar
+            </button>
+            <i *ngIf="currentUser?.mfaEnabled" class="fas fa-check-circle text-green-400 text-xl"></i>
+          </div>
+
+          <div class="flex items-center justify-between p-4 rounded-2xl bg-green-500/10 border border-green-500/30">
+            <div class="flex items-center">
+              <i class="fas fa-key text-green-400 text-2xl mr-4"></i>
+              <div>
+                <h3 class="text-white font-semibold">Contraseña Segura</h3>
+                <p class="text-slate-300 text-sm">Cumple todos los requisitos</p>
+              </div>
+            </div>
+            <i class="fas fa-check-circle text-green-400 text-xl"></i>
+          </div>
+
+          <div class="flex items-center justify-between p-4 rounded-2xl bg-green-500/10 border border-green-500/30">
+            <div class="flex items-center">
+              <i class="fas fa-user-check text-green-400 text-2xl mr-4"></i>
+              <div>
+                <h3 class="text-white font-semibold">Cuenta Verificada</h3>
+                <p class="text-slate-300 text-sm">Email confirmado</p>
+              </div>
+            </div>
+            <i class="fas fa-check-circle text-green-400 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/10">
+      <h2 class="text-2xl font-bold text-white mb-6">Acciones Rápidas</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button (click)="goToMfaSetup()" *ngIf="!currentUser?.mfaEnabled"
+          class="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-shield-alt mr-2"></i>
+          Configurar 2FA
+        </button>
+
+        <button class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-user-edit mr-2"></i>
+          Editar Perfil
+        </button>
+
+        <button class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-cog mr-2"></i>
+          Configuración
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
