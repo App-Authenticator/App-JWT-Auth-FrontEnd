@@ -236,7 +236,9 @@ export class AuthService {
       errorMessage = error.message;
     }
 
-    if (error.status === 401) {
+    const isAuthPage = this.router.url.includes('/auth') || this.router.url.includes('/mfa-setup');
+    
+    if (error.status === 401 && !isAuthPage) {
       this.clearAuth();
       this.router.navigate(['/auth']);
     }

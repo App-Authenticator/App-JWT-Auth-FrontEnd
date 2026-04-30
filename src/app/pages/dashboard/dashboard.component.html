@@ -25,6 +25,18 @@
         <h2 class="text-2xl font-bold text-white mb-6">Información Personal</h2>
 
         <div class="space-y-4" *ngIf="currentUser">
+          <div class="admin-section bg-purple-500/10 border border-purple-500/20 p-4 rounded-xl mb-4" *ngIf="isAdmin()">
+            <h3 class="text-white font-bold mb-2">Panel de Control Avanzado</h3>
+            <p class="text-slate-300 text-sm mb-4">Como administrador, tienes acceso a la gestión global del sistema.</p>
+            <div class="flex flex-col gap-2">
+              <button class="bg-purple-600 hover:bg-purple-700 text-white text-sm py-2 px-4 rounded-lg transition-all" (click)="goToAdmin()">
+                <i class="fas fa-users-cog mr-2"></i> Gestión de Usuarios y Roles (RBAC)
+              </button>
+              <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-lg transition-all" (click)="goToProducts()">
+                <i class="fas fa-boxes mr-2"></i> Gestión de Productos (ABAC)
+              </button>
+            </div>
+          </div>
           <div class="flex justify-between">
             <span class="text-slate-400">Email:</span>
             <span class="text-white">{{ currentUser.email }}</span>
@@ -38,8 +50,8 @@
             <span class="text-white">{{ currentUser.telefono }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-slate-400">Rol:</span>
-            <span class="text-white">{{ currentUser.role }}</span>
+            <span class="text-slate-400">Roles:</span>
+            <span class="text-white">{{ currentUser.roles.join(', ') }}</span>
           </div>
         </div>
       </div>
@@ -104,14 +116,16 @@
           Configurar 2FA
         </button>
 
-        <button class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
-          <i class="fas fa-user-edit mr-2"></i>
-          Editar Perfil
+        <button (click)="goToProducts()"
+          class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-box-open mr-2"></i>
+          Gestionar Productos
         </button>
 
-        <button class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
-          <i class="fas fa-cog mr-2"></i>
-          Configuración
+        <button *ngIf="isAdmin()" (click)="goToAdmin()"
+          class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-user-shield mr-2"></i>
+          Panel Admin (RBAC)
         </button>
       </div>
     </div>

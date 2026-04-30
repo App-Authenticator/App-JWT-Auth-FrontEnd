@@ -111,6 +111,9 @@ export class RegistroComponent implements OnInit {
     color: 'bg-red-500',
   };
 
+  // Mensajes de error
+  errorMessage: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -230,6 +233,7 @@ export class RegistroComponent implements OnInit {
 
   toggleForm(): void {
     this.isRegisterForm = !this.isRegisterForm;
+    this.errorMessage = null;
     this.resetForms();
   }
 
@@ -428,6 +432,7 @@ export class RegistroComponent implements OnInit {
       errorMessage = error;
     }
 
+    this.errorMessage = errorMessage;
     this.showNotification(errorMessage, 'error');
 
     this.isRegisterLoading = false;
@@ -583,6 +588,7 @@ export class RegistroComponent implements OnInit {
   }
   onMfaCodeInput(event: any): void {
     const value = event.target.value;
+    this.errorMessage = null;
     // Solo permitir números y máximo 6 dígitos
     const numericValue = value.replace(/\D/g, '').substring(0, 6);
     this.mfaForm.get('mfaCode')?.setValue(numericValue);

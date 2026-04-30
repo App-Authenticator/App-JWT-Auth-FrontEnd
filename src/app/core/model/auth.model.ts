@@ -35,7 +35,7 @@ export interface UserResponse {
   nombre: string;
   apellido: string;
   telefono: string;
-  role: string;
+  roles: string[];
   mfa_enabled: boolean;
 }
 

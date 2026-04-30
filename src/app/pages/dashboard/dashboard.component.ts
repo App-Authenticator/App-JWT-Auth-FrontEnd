@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
+      console.log('Usuario actual en Dashboard:', user);
+      console.log('Roles detectados:', user?.roles);
       if (!user) {
         this.router.navigate(['/auth']);
       }
@@ -33,5 +35,22 @@ export class DashboardComponent implements OnInit {
 
   goToMfaSetup(): void {
     this.router.navigate(['/mfa-setup']);
+  }
+
+  isAdmin(): boolean {
+    if (!this.currentUser || !this.currentUser.roles) return false;
+    return this.currentUser.roles.some(role => 
+      role.toUpperCase() === 'ADMIN' || role.toUpperCase() === 'ROLE_ADMIN'
+    );
+  }
+
+  goToAdmin(): void {
+    console.log('Navegando a Panel Admin...');
+    this.router.navigate(['/admin']);
+  }
+
+  goToProducts(): void {
+    console.log('Navegando a Productos...');
+    this.router.navigate(['/products']);
   }
 }

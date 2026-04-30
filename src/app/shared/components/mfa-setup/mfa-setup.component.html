@@ -25,6 +25,12 @@
       </div>
     </div>
 
+    <!-- Mensaje de Error -->
+    <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center gap-3 text-red-400 animate-bounce">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span class="text-sm font-medium">{{ errorMessage }}</span>
+    </div>
+
     <!-- Paso 1: Email -->
     <div *ngIf="step === 'email'">
       <h2 class="text-xl font-bold text-white mb-6 text-center">Confirma tu email</h2>

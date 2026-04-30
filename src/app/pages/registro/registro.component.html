@@ -39,6 +39,12 @@
           </div>
         </div>
 
+        <!-- Mensaje de Error Global -->
+        <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center gap-3 text-red-400 animate-bounce">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span class="text-sm font-medium">{{ errorMessage }}</span>
+        </div>
+
         <!-- Formulario de Registro -->
         <form *ngIf="isRegisterForm" [formGroup]="registerForm" (ngSubmit)="onRegister()" class="space-y-6" [@slideIn]>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -432,6 +438,12 @@
                   <p class="text-emerald-400 text-xs mt-2">
                     Usuario: {{ requiresMfaEmail }}
                   </p>
+                </div>
+
+                <!-- Error MFA -->
+                <div *ngIf="errorMessage" class="p-3 bg-red-500/20 border border-red-500/40 rounded-xl text-red-400 text-xs flex items-center gap-2 animate-shake">
+                  <i class="fas fa-times-circle"></i>
+                  <span>{{ errorMessage }}</span>
                 </div>
 
                 <!-- Campo código MFA -->

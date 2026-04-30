@@ -1,0 +1,87 @@
+<div class="products-container">
+  <header class="header-section">
+    <h2>Gestión de Inventario</h2>
+    <button class="btn-back" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Volver al Dashboard
+    </button>
+  </header>
+
+  <div class="products-layout">
+    <!-- Formulario Lateral -->
+    <aside class="product-form card">
+      <h3>{{ editingProduct ? 'Actualizar Producto' : 'Nuevo Producto' }}</h3>
+      
+      <div class="form-group">
+        <label>Nombre del Producto</label>
+        <input type="text" [(ngModel)]="formProduct.name" placeholder="Ej: Laptop Pro">
+      </div>
+
+      <div class="form-group">
+        <label>Descripción Detallada</label>
+        <textarea [(ngModel)]="formProduct.description" rows="4" placeholder="Especificaciones técnicas..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Precio de Venta ($)</label>
+        <input type="number" [(ngModel)]="formProduct.price" placeholder="0.00">
+      </div>
+      
+      <div class="form-actions">
+        <button class="btn-primary" (click)="editingProduct ? updateProduct() : createProduct()">
+          <i class="fas" [ngClass]="editingProduct ? 'fa-sync' : 'fa-plus'"></i>
+          {{ editingProduct ? 'Guardar Cambios' : 'Añadir Producto' }}
+        </button>
+        <button *ngIf="editingProduct" class="btn-cancel" (click)="resetForm()">
+          Cancelar Edición
+        </button>
+      </div>
+    </aside>
+
+    <!-- Tabla de Productos -->
+    <main class="table-container card">
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Propietario</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products" class="table-row">
+            <td>
+              <div class="product-name-cell">
+                <span class="name-text">{{ product.name }}</span>
+                <span *ngIf="product.owner_id === currentUser?.id" class="badge-owner-mini">Tuyo</span>
+              </div>
+            </td>
+            <td><p class="desc-text">{{ product.description }}</p></td>
+            <td><span class="price-text">${{ product.price }}</span></td>
+            <td><span class="owner-id">#{{ product.owner_id }}</span></td>
+            <td>
+              <div class="table-actions" *ngIf="canEdit(product)">
+                <button class="btn-icon-edit" (click)="editProduct(product)" title="Editar">
+                  <i class="fas fa-pen"></i>
+                </button>
+                <button class="btn-icon-delete" (click)="deleteProduct(product.id!)" title="Eliminar">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div class="text-center text-slate-500 text-xs" *ngIf="!canEdit(product)">
+                <i class="fas fa-lock"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div class="empty-state-table" *ngIf="products.length === 0">
+        <i class="fas fa-box-open"></i>
+        <p>No hay productos registrados en el inventario.</p>
+      </div>
+    </main>
+  </div>
+</div>

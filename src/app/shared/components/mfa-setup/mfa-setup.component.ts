@@ -18,6 +18,7 @@ export class MfaSetupComponent implements OnInit {
   isLoading = false;
   step: 'email' | 'qr' | 'verify' = 'email';
   currentEmail = '';
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -53,6 +54,7 @@ export class MfaSetupComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error configurando MFA:', error);
+          this.errorMessage = error.message;
           this.showNotification('Error configurando MFA: ' + error.message, 'error');
           this.isLoading = false;
         }
@@ -79,6 +81,7 @@ export class MfaSetupComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error verificando MFA:', error);
+          this.errorMessage = 'Código inválido. Intenta nuevamente.';
           this.showNotification('Código inválido. Intenta nuevamente.', 'error');
           this.setupForm.get('verificationCode')?.setValue('');
           this.isLoading = false;
@@ -99,6 +102,7 @@ export class MfaSetupComponent implements OnInit {
 
   onCodeInput(event: any): void {
     const value = event.target.value;
+    this.errorMessage = null;
     const numericValue = value.replace(/\D/g, '').substring(0, 6);
     this.setupForm.get('verificationCode')?.setValue(numericValue);
 
